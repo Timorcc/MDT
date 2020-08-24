@@ -26,8 +26,8 @@ public class BigSecretaryController {
     }
 
     //模糊查询
-    @GetMapping(value = "background/fuzzyQuery")
-    public String fuzzyQuery(HttpServletRequest request, Model model) {
+    @GetMapping(value = "background/fuzzyQueryWithBig")
+    public String fuzzyQueryWithBig(HttpServletRequest request, Model model) {
         String name = request.getParameter("bigSecretaryName");
         List<BigSecretary> bigSecretaryView = bigSecretaryServiceImpl.fuzzyFind(name);
         model.addAttribute("bigSecretaryViews", bigSecretaryView);
@@ -36,8 +36,8 @@ public class BigSecretaryController {
 
 
     /*跳转到添加或者修改大秘书的表单*/
-    @GetMapping(value = "background/group/list/{type}")
-    public String addGroupHtml(HttpServletRequest request, Model model, @PathVariable("type") String type) {
+    @GetMapping(value = "background/bigSecretary/list/{type}")
+    public String toBigListHtml(HttpServletRequest request, Model model, @PathVariable("type") String type) {
         if (type.equals("edit")) {
             String id = request.getParameter("id");
             BigSecretary bigSecretary = bigSecretaryServiceImpl.findById(Long.valueOf(id));
@@ -48,9 +48,9 @@ public class BigSecretaryController {
     }
 
     /*实现添加或者修改大秘书信息*/
-    @RequestMapping(value = "background/group/list/post/{type}", method = RequestMethod.POST)
+    @RequestMapping(value = "background/bigSecretary/list/post/{type}", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> addDocGroup(HttpServletRequest request, @PathVariable("type") String type) {
+    public Map<String, Object> toBigAdd(HttpServletRequest request, @PathVariable("type") String type) {
         Map<String, Object> map = new HashMap<>();
 
         String bigSecretaryName = request.getParameter("bigSecretaryName").trim();
