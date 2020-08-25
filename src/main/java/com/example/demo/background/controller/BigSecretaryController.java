@@ -1,7 +1,7 @@
 package com.example.demo.background.controller;
 
 import com.example.demo.background.entity.BigSecretary;
-import com.example.demo.background.service.impl.BigSecretaryServiceImpl;
+import com.example.demo.background.service.BigSecretaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +15,12 @@ import java.util.Map;
 @Controller
 public class BigSecretaryController {
     @Autowired
-    private BigSecretaryServiceImpl bigSecretaryServiceImpl;
+    private BigSecretaryService bigSecretaryService;
 
     //查询所有大秘书列表
     @GetMapping("background/bigsecretarylist")
     public String bigSecretaryList(HttpServletRequest request, Model model) {
-        List<BigSecretary> bigSecretaryView = bigSecretaryServiceImpl.getBigSecretaryList();
+        List<BigSecretary> bigSecretaryView = bigSecretaryService.getBigSecretaryList();
         model.addAttribute("bigSecretaryViews", bigSecretaryView);
         return "big_secretary_list";
     }
@@ -29,7 +29,7 @@ public class BigSecretaryController {
     @GetMapping(value = "background/fuzzyQueryWithBig")
     public String fuzzyQueryWithBig(HttpServletRequest request, Model model) {
         String name = request.getParameter("bigSecretaryName");
-        List<BigSecretary> bigSecretaryView = bigSecretaryServiceImpl.fuzzyFind(name);
+        List<BigSecretary> bigSecretaryView = bigSecretaryService.fuzzyFind(name);
         model.addAttribute("bigSecretaryViews", bigSecretaryView);
         return "big_secretary_list";
     }
@@ -40,7 +40,7 @@ public class BigSecretaryController {
     public String toBigListHtml(HttpServletRequest request, Model model, @PathVariable("type") String type) {
         if (type.equals("edit")) {
             String id = request.getParameter("id");
-            BigSecretary bigSecretary = bigSecretaryServiceImpl.findById(Long.valueOf(id));
+            BigSecretary bigSecretary = bigSecretaryService.findById(Long.valueOf(id));
             model.addAttribute("bigSecretary", bigSecretary);
         }
         model.addAttribute("type", type);
@@ -59,10 +59,10 @@ public class BigSecretaryController {
         boolean state = false;
         if (type.equals("edit")) {
             String id = request.getParameter("id");
-            state = bigSecretaryServiceImpl.updateById(Long.valueOf(id), bigSecretaryName, bigSecretaryTelNum, bigSecretaryWxNum);
+            state = bigSecretaryService.updateById(Long.valueOf(id), bigSecretaryName, bigSecretaryTelNum, bigSecretaryWxNum);
         }
         if (type.equals("add")) {
-            state = bigSecretaryServiceImpl.AddBigSecretary(bigSecretaryName, bigSecretaryTelNum, bigSecretaryWxNum);
+            state = bigSecretaryService.AddBigSecretary(bigSecretaryName, bigSecretaryTelNum, bigSecretaryWxNum);
         }
         map.put("type", type);
         map.put("state", state);

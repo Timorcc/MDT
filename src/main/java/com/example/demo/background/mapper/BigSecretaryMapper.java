@@ -19,8 +19,8 @@ public interface BigSecretaryMapper {
     @Update("update big_secretary set username=#{username},tel_num=#{telNum},wx_num=#{wxNum} where id=#{id}")
     Boolean updateById(Long id, String username, String telNum, String wxNum);
 
+    //模糊查询
     @Select("select * from big_secretary where username like '%${name}%'  ")
-    List<BigSecretary> fuzzyFind(@Param("name")String name);
-
+    List<BigSecretary> fuzzyFind(@Param("name") String name);
 
 }

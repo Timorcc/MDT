@@ -2,7 +2,7 @@ package com.example.demo.background.controller;
 
 
 import com.example.demo.background.entity.SmallSecretary;
-import com.example.demo.background.service.impl.SmallSecretaryServiceImpl;
+import com.example.demo.background.service.SmallSecretaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,12 +16,12 @@ import java.util.Map;
 @Controller
 public class SmallSecretaryController {
     @Autowired
-    private SmallSecretaryServiceImpl smallSecretaryServiceImpl;
+    private SmallSecretaryService smallSecretaryService;
 
     //查询所有小秘书列表
     @GetMapping("background/smallsecretarylist")
     public String smallSecretaryList(HttpServletRequest request, Model model) {
-        List<SmallSecretary> smallSecretaryView = smallSecretaryServiceImpl.getSmallSecretaryList();
+        List<SmallSecretary> smallSecretaryView = smallSecretaryService.getSmallSecretaryList();
         model.addAttribute("smallSecretaryViews", smallSecretaryView);
         return "small_secretary_list";
     }
@@ -30,7 +30,7 @@ public class SmallSecretaryController {
     @GetMapping(value = "background/fuzzyQueryWithSmall")
     public String fuzzyQueryWithSmall(HttpServletRequest request, Model model) {
         String name = request.getParameter("smallSecretaryName");
-        List<SmallSecretary> smallSecretaryView = smallSecretaryServiceImpl.fuzzyFind(name);
+        List<SmallSecretary> smallSecretaryView = smallSecretaryService.fuzzyFind(name);
         model.addAttribute("smallSecretaryViews", smallSecretaryView);
         return "small_secretary_list";
     }
@@ -41,7 +41,7 @@ public class SmallSecretaryController {
     public String toSmallListHtml(HttpServletRequest request, Model model, @PathVariable("type") String type) {
         if (type.equals("edit")) {
             String id = request.getParameter("id");
-            SmallSecretary smallSecretary = smallSecretaryServiceImpl.findById(Long.valueOf(id));
+            SmallSecretary smallSecretary = smallSecretaryService.findById(Long.valueOf(id));
             model.addAttribute("smallSecretary", smallSecretary);
         }
         model.addAttribute("type", type);
@@ -60,10 +60,10 @@ public class SmallSecretaryController {
         boolean state = false;
         if (type.equals("edit")) {
             String id = request.getParameter("id");
-            state = smallSecretaryServiceImpl.updateById(Long.valueOf(id), smallSecretaryName, smallSecretaryTelNum, smallSecretaryWxNum);
+            state = smallSecretaryService.updateById(Long.valueOf(id), smallSecretaryName, smallSecretaryTelNum, smallSecretaryWxNum);
         }
         if (type.equals("add")) {
-            state = smallSecretaryServiceImpl.AddSmallSecretary(smallSecretaryName, smallSecretaryTelNum, smallSecretaryWxNum);
+            state = smallSecretaryService.AddSmallSecretary(smallSecretaryName, smallSecretaryTelNum, smallSecretaryWxNum);
         }
         map.put("type", type);
         map.put("state", state);
