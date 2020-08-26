@@ -3,6 +3,7 @@ package com.example.demo.background.controller;
 import com.example.demo.background.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +29,10 @@ public class AdminController {
         }
         return "index";
     }
-
+    @RequestMapping(value = "background/main")
+    public String mainHtml(HttpServletRequest request, Model model) {
+        return "main";
+    }
     //输入账号秘密请求登录,登录校验
     @PostMapping(value = "background/login/post")
     @ResponseBody
@@ -38,6 +42,7 @@ public class AdminController {
 
         Map<String, Object> map = new HashMap<>();
         map = adminService.login(username, password, request);
+
         return map;
     }
 

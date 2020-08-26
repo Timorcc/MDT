@@ -57,14 +57,13 @@
                         </dd>
                     </dl>
                 </li>
-
                 <!--医生管理-->
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 医生管理</span></a>
                     <dl class="layui-nav-child">
                         <dd th:if="${session.username} eq 'root'">
                             <a href="javascript:;" kit-target=""
-                               data-options="{url:'admin/list/show',icon:'&#xe66f;',title:'用户管理',id:'31'}">
+                               data-options="{url:'doctorList',icon:'&#xe66f;',title:'用户管理',id:'31'}">
                                 <i class="layui-icon">&#xe66f;</i><span> 医生列表</span></a>
                         </dd>
                     </dl>

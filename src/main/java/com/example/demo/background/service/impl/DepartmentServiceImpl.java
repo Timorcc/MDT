@@ -1,7 +1,6 @@
 package com.example.demo.background.service.impl;
 
 import com.example.demo.background.entity.Department;
-import com.example.demo.background.entity.Doctor;
 import com.example.demo.background.mapper.DepartmentMapper;
 import com.example.demo.background.service.DepartmentService;
 import lombok.extern.slf4j.Slf4j;

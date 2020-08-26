@@ -22,4 +22,7 @@ public interface DepartmentMapper {
 
     @Update("update department set depart_name=#{name} where id = #{id}")
     Boolean updateById(Long id, String name);
+
+    @Select("select depart_name from department where id =#{id}")
+    String findDepartmentNameById(Long id);
 }
