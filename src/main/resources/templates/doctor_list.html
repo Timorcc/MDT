@@ -51,7 +51,7 @@
             <td th:text="${doctorAndDepartView.wx_num}"></td>
             <td th:text="${doctorAndDepartView.departsName}"></td>
             <td>
-                <a title="修改信息" data-method="modDepartment" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+                <a title="修改信息" data-method="modDoctor" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
             </td>
         </tr>
         </tbody>
@@ -94,7 +94,7 @@
         //设计弹出层
         var active = {
             //修改医生信息
-            modDepartment: function (othis) {
+            modDoctor: function (othis) {
                 var id = $(othis).parent('td').parent('tr').attr('id');
                 layer.open({
                     type: 2
@@ -119,7 +119,7 @@
                     content: "doctor/list/add"
                     /*]]>*/
                 });
-            },
+            }
 
         };
 

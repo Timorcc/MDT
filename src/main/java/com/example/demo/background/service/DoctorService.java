@@ -9,4 +9,6 @@ import java.util.List;
 public interface DoctorService {
     List<Doctor> findAll();
     List<DoctorAndDepart> findAllDoctorAndDepart();
+    DoctorAndDepart findDoctorAndDepartById(Long id);
+    Boolean AddDoctor(String username, String telNum, String wxNum);
 }

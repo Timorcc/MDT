@@ -1,7 +1,6 @@
 package com.example.demo.background.service.impl;
 
 
-
 import com.example.demo.background.entity.Doctor;
 import com.example.demo.background.entity.DoctorAndDepart;
 import com.example.demo.background.mapper.DoctorMapper;
@@ -35,6 +34,26 @@ public class DoctorServiceImpl implements DoctorService {
         } catch (Exception e) {
             log.error(e.toString());
             return null;
+        }
+    }
+
+    @Override
+    public DoctorAndDepart findDoctorAndDepartById(Long id) {
+        try {
+            return doctorMapper.findDoctorAndDepartById(id);
+        } catch (Exception e) {
+            log.error(e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Boolean AddDoctor(String username, String telNum, String wxNum) {
+        try{
+            return doctorMapper.AddDoctor(username,telNum,wxNum);
+        }catch (Exception e){
+            log.error(e.toString());
+            return false;
         }
     }
 }

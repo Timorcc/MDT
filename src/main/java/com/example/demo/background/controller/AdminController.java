@@ -20,7 +20,6 @@ public class AdminController {
     public String loginHtml() {
         return "login";
     }
-
     @RequestMapping(value = "background/index")
     public String index(HttpServletRequest request) {
         Object username = request.getSession().getAttribute("username");
@@ -39,10 +38,8 @@ public class AdminController {
     public Map<String, Object> login(HttpServletRequest request,
                                      @RequestParam(name = "username") String username,
                                      @RequestParam(name = "password") String password) {
-
         Map<String, Object> map = new HashMap<>();
         map = adminService.login(username, password, request);
-
         return map;
     }
 
