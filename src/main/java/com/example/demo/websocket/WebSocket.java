@@ -14,6 +14,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * 单独发送消息，群发，监听上下线等方法
+ */
 @Slf4j
 @Component
 @ServerEndpoint("/websocket/{username}")

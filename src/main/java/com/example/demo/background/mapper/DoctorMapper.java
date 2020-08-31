@@ -1,32 +1,43 @@
 package com.example.demo.background.mapper;
 
 import com.example.demo.background.entity.Doctor;
-import com.example.demo.background.entity.DoctorAndDepart;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.example.demo.background.dto.DoctorAndDepart;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
+
 
 @Mapper
 public interface DoctorMapper {
-
+    //医生表中查全部医生
     @Select("select * from doctor")
     List<Doctor> findAll();
 
+    //医生表中插入
     @Insert("insert into doctor(username,tel_num,wx_num) values(#{username},#{telNum},#{wxNum})")
     Boolean AddDoctor(String username, String telNum, String wxNum);
 
+    //医生表中根据id查具体医生
     @Select("select * from doctor where id = #{id}")
     Doctor findById(Long id);
 
-//    @Select("select rdd.doc_id,do.username,do.tel_num,do.wx_num, GROUP_CONCAT(de.depart_name SEPARATOR ',') departsName from relevance_doc_depart rdd left join doctor do on rdd.doc_id=do.id left join department de on rdd.depart_id=de.id GROUP BY rdd.doc_id")
-//    List<DoctorAndDepart> findAllDoctorAndDepart();
-//    @Select("select rdd.doc_id,do.username,do.tel_num,do.wx_num, GROUP_CONCAT(de.depart_name SEPARATOR ',') departsName from relevance_doc_depart rdd left join doctor do on rdd.doc_id=do.id left join department de on rdd.depart_id=de.id where rdd.doc_id = #{id}")
-//    DoctorAndDepart findDoctorAndDepartById(Long id);
+    //医生表中根据id更新某一医生的信息
+    @Update("update doctor set username=#{username},tel_num = #{tel_num},wx_num=#{wx_num} where id = #{id}")
+    Boolean updateDoctorById(Long id, String username, String tel_num, String wx_num);
+
+    //关联查询 查询所有医生 && 所属的科室
     @Select("SELECT doc.id, doc.username,doc.tel_num,doc.wx_num,GROUP_CONCAT(dep.depart_name SEPARATOR ',') departsName from doctor doc LEFT JOIN relevance_doc_depart rdd on doc.id = rdd.doc_id LEFT JOIN department dep on rdd.depart_id = dep.id GROUP BY doc.id")
     List<DoctorAndDepart> findAllDoctorAndDepart();
+
+    //关联查询 根据医生的id查询医生 && 所属科室
     @Select("SELECT doc.id, doc.username,doc.tel_num,doc.wx_num,GROUP_CONCAT(dep.depart_name SEPARATOR ',') departName from doctor doc LEFT JOIN relevance_doc_depart rdd on doc.id = rdd.doc_id LEFT JOIN department dep on rdd.depart_id = dep.id where doc.id =#{id}")
     DoctorAndDepart findDoctorAndDepartById(Long id);
+
+    //删除关联表中 医生id=？的所有数据
+    @Delete("DELETE from relevance_doc_depart where doc_id = #{id}")
+    Boolean deleteRDDByDoctorId(Long id);
+
+    //在关联表中添加医生id 科室id
+    @Insert("insert into relevance_doc_depart(doc_id,depart_id) values (#{doc_id},#{depart_id})")
+    Boolean addRDD(Long doc_id, Long depart_id);
 }

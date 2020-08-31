@@ -1,9 +1,13 @@
 package com.example.demo.background.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.example.demo.background.dto.DoctorAndDepart;
 import com.example.demo.background.entity.Department;
-import com.example.demo.background.entity.DoctorAndDepart;
 import com.example.demo.background.service.DepartmentService;
 import com.example.demo.background.service.DoctorService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +20,7 @@ import java.util.Map;
 
 
 @Controller
+@Slf4j
 public class DoctorController {
     @Autowired
     DoctorService doctorService;
@@ -65,16 +70,27 @@ public class DoctorController {
     @ResponseBody
     public Map<String, Object> toBigAdd(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
+
+        //医生的id
+        String id = request.getParameter("id");
         String doctorName = request.getParameter("doctorName").trim();
         String doctorTelNum = request.getParameter("doctorTelNum").trim();
         String doctorWxNum = request.getParameter("doctorWxNum").trim();
-        //医生的id
-        String id = request.getParameter("id");
+        List<String> docDepartList = JSON.parseArray(request.getParameter("docDepartList").trim(), String.class);
+        Boolean result1 = doctorService.updateDoctorById(Long.valueOf(id), doctorName, doctorTelNum, doctorWxNum);
+        Boolean result2 = doctorService.updateRDDByDoctorId(Long.valueOf(id), docDepartList);
         boolean state = false;
-
-
-        map.put("state", state);
+        if ((result1 && result2)){
+            state=true;
+        }
+            map.put("state", state);
         return map;
     }
+
+    @RequestMapping(value = "background/test")
+    public String test() {
+        return "test";
+    }
+
 
 }

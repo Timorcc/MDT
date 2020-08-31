@@ -11,7 +11,9 @@
             position: absolute;
             top: 30px;
         }
+        .text{
 
+        }
     </style>
 </head>
 <body>
@@ -26,7 +28,6 @@
                        lay-verify="doctorName"/>
                 <input type="text" th:value="${doctorAndDepart.id}" style="display: none"
                        name="id"/>
-
             </div>
         </div>
         <div class="layui-form-item">
@@ -34,7 +35,6 @@
             <div class="layui-input-block">
                 <input type="text" name="doctorTelNum" class="layui-input" th:value="${doctorAndDepart.tel_num}"
                        lay-verify="doctorTelNum"/>
-
             </div>
         </div>
         <div class="layui-form-item">
@@ -42,16 +42,23 @@
             <div class="layui-input-block">
                 <input type="text" name="doctorWxNum" class="layui-input" th:value="${doctorAndDepart.wx_num}"
                        lay-verify="doctorWxNum"/>
-
             </div>
         </div>
+
+
 
         <div class="layui-form-item">
             <label class="layui-form-label">选择科室</label>
             <div class="layui-input-block">
                 <div th:each="department:${departmentsList}" th:id="${department.id}">
-                    <input type="checkbox" th:attr="name='${department.id}'"
-                           th:text="${department.id}+${department.depart_name}">
+                    <div>
+                        <input lay-filter="test1"
+                               type="checkbox"
+                               th:value="${department.id}"
+                               th:text="${department.id}+${department.depart_name}"
+                        >
+                    </div>
+
                 </div>
             </div>
             <div class="layui-form-item">
@@ -59,6 +66,7 @@
                     <button class="layui-btn" lay-submit="" lay-filter="formDemo">立即提交</button>
                 </div>
             </div>
+        </div>
     </form>
 </div>
 <script type="text/javascript" src="/layui/layui.js" th:src="@{/layui/layui.js}"></script>
@@ -69,13 +77,49 @@
         var form = layui.form;
         var $ = layui.jquery;
         var layer = layui.layer;
+        var docDepartList = [];
+        //Util 获取元素在数组的下标
+        Array.prototype.indexOf = function(val) {
+            for (var i = 0; i < this.length; i++) {
+                if (this[i] === val)	{
+                    return i;
+                };
+            }
+            return -1;
+        };
+        //Util 根据数组的下标，删除该下标的元素
+        Array.prototype.remove = function(val) {
+            var index = this.indexOf(val);
+            if (index > -1) {
+                this.splice(index, 1);
+            }
+        };
+
+
+        //获取当前医生需要修改的科室id
+        form.on('checkbox(test1)', function(data){
+            console.log ("-----------");
+            console.log(data.elem); //得到checkbox原始DOM对象
+            console.log(data.elem.checked); //是否被选中，true或者false
+            console.log(data.value); //复选框value值，也可以通过data.elem.value得到
+            console.log ("-----------");
+            if (data.elem.checked ===true){
+                docDepartList.push(parseInt(data.value));
+            }if(data.elem.checked ===false){
+                console.log("删除数据后的list:------");
+                docDepartList.remove(parseInt(data.value))
+            }
+            console.log(docDepartList);
+        });
+
 
 
         //监听提交
         form.on('submit(formDemo)', function (data) {
-            console.log("选择的科室是——————————");
+            console.log("提交的科室是——————————");
+            console.log(docDepartList);
             console.log(data.field);
-            console.log("_____");
+            console.log("--------------------");
             $.ajax({
                 type: 'POST',
                 url: 'post/edit',
@@ -83,16 +127,13 @@
                     id: data.field.id,
                     doctorName: data.field.doctorName,
                     doctorTelNum: data.field.doctorTelNum,
-                    doctorWxNum: data.field.doctorWxNum
-
+                    doctorWxNum: data.field.doctorWxNum,
+                    docDepartList: JSON.stringify(docDepartList)
                 },
-
                 dataType: 'json',
                 success: function (data) {
                     if (data.state) {
                         var msg = "修改成功！";
-
-
                         layer.msg(msg, {
                             icon: 1, time: 1000, end: function () {
                                 var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

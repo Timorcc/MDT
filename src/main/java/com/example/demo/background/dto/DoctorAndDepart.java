@@ -1,4 +1,4 @@
-package com.example.demo.background.entity;
+package com.example.demo.background.dto;
 
 import lombok.Data;
 
@@ -8,5 +8,6 @@ public class DoctorAndDepart {
     private String tel_num;
     private String wx_num;
     private String username;
+    //private String departId;
     private String departsName;
 }
