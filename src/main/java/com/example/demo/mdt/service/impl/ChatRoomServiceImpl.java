@@ -28,7 +28,12 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public Boolean addChatRoom(String name, Date createTime, String createAdminId, Long departId, boolean state) {
-        return null;
+    public Boolean addChatRoom(String name, Date createTime, Long createAdminId, Long departId, boolean state) {
+        try {
+            return chatRoomMapper.addChatRoom(name,createTime,createAdminId,departId,state);
+        }catch (Exception e){
+            log.error(e.toString());
+            return false;
+        }
     }
 }

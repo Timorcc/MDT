@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface ChatRoomService {
     List<ChatRoom> findAll();
-    Boolean addChatRoom(String name, Date createTime, String createAdminId, Long departId, boolean state);
+    Boolean addChatRoom(String name, Date createTime, Long createAdminId, Long departId, boolean state);
 }

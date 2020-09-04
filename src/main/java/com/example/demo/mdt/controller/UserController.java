@@ -37,7 +37,6 @@ public class UserController {
         }
         List<ChatRoom> chatRoomView = chatRoomService.findAll();
         model.addAttribute("chatRoomViews", chatRoomView);
-
         return "mdt_index";
     }
 
