@@ -1,0 +1,1 @@
+var webSocketUrl="ws://localhost:9527/websocket/";

@@ -19,7 +19,14 @@
                 class="layui-icon">&#xe61f;</i>添加医生
         </button>
     </div>
-
+    <!--查询按钮-->
+<!--    <div class="layui-inline">-->
+<!--        <div class="layui-input-inline">-->
+<!--            <input type="text" placeholder="请输入医生姓名" id="searchInp" class="layui-input search_input"-->
+<!--                   />-->
+<!--        </div>-->
+<!--        <a class="layui-btn search_btn search"><i class="layui-icon">&#xe615;</i>查询</a>-->
+<!--    </div>-->
 </blockquote>
 <div class="layui-form">
     <!--医生列表Table-->
@@ -67,7 +74,20 @@
         var $ = layui.jquery;
         var laypage = layui.laypage;
         var layer = layui.layer;
-
+        //实现查询医生
+        // $('.search').click(function () {
+        //     var docName = $('#searchInp').val();
+        //     if (docName == null || docName.trim() === '') {
+        //         layer.open({
+        //             title: '提示',
+        //             content: '请输入查询信息'
+        //         });
+        //         return;
+        //     }
+        //     /*<![CDATA[*/
+        //     window.location.href = "fuzzyQueryWithDoc?docName=" + docName;
+        //     /*]]>*/
+        // });
 
         //全选
         form.on('checkbox(allChoose)', function (data) {

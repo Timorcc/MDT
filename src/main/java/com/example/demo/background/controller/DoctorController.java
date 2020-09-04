@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.example.demo.background.dto.DoctorAndDepart;
+import com.example.demo.background.entity.BigSecretary;
 import com.example.demo.background.entity.Department;
 import com.example.demo.background.service.DepartmentService;
 import com.example.demo.background.service.DoctorService;
@@ -70,7 +71,6 @@ public class DoctorController {
     @ResponseBody
     public Map<String, Object> toBigAdd(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
-
         //医生的id
         String id = request.getParameter("id");
         String doctorName = request.getParameter("doctorName").trim();
@@ -87,10 +87,15 @@ public class DoctorController {
         return map;
     }
 
-    @RequestMapping(value = "background/test")
-    public String test() {
-        return "test";
-    }
+    //模糊查询
+//    @GetMapping(value = "background/fuzzyQueryWithDoc")
+//    public String fuzzyQueryWithDoc(HttpServletRequest request, Model model) {
+//        String name = request.getParameter("docName");
+//        List<BigSecretary> bigSecretaryView = bigSecretaryService.fuzzyFind(name);
+//        model.addAttribute("bigSecretaryViews", bigSecretaryView);
+//
+//        return "big_secretary_list";
+//    }
 
 
 }

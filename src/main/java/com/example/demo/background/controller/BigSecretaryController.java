@@ -46,7 +46,6 @@ public class BigSecretaryController {
         model.addAttribute("type", type);
         return "bigSecretary_add_edit";
     }
-
     /*实现添加或者修改大秘书信息*/
     @RequestMapping(value = "background/bigSecretary/list/post/{type}", method = RequestMethod.POST)
     @ResponseBody

@@ -1,4 +1,4 @@
-package com.example.demo.websocket;
+package com.example.demo.mdt.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -154,3 +154,4 @@ public class WebSocket {
     }
 
 }
+ 

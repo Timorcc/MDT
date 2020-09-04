@@ -3,6 +3,7 @@ package com.example.demo.background.mapper;
 import com.example.demo.background.entity.Doctor;
 import com.example.demo.background.dto.DoctorAndDepart;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -20,6 +21,9 @@ public interface DoctorMapper {
     //医生表中根据id查具体医生
     @Select("select * from doctor where id = #{id}")
     Doctor findById(Long id);
+    //医生表中根据姓名查询医生
+    @Select("select * from doctor where tel_num = #{telNum}")
+    Doctor findByTelNum(String telNum);
 
     //医生表中根据id更新某一医生的信息
     @Update("update doctor set username=#{username},tel_num = #{tel_num},wx_num=#{wx_num} where id = #{id}")

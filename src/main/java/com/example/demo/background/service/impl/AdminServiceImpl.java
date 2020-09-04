@@ -24,7 +24,6 @@ public class AdminServiceImpl implements AdminService {
         try {
             Admin bgdAdmin = adminMapper.findByUsername(username);
             log.info("login user is  ---==》" + bgdAdmin);
-
             if (bgdAdmin == null) {
                 map.put("status", 1);
                 map.put("msg", "用户名不存在");
