@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>网络聊天室</title>
+</head>
+<style type="text/css">
+    .talk_con {
+        width: 600px;
+        height: 510px;
+        border: 1px solid #666;
+        margin: 50px auto 0;
+        background: #f9f9f9;
+    }
+
+    .talk_show {
+        width: 580px;
+        height: 420px;
+        border: 1px solid #666;
+        background: #fff;
+        margin: 10px auto 0;
+        overflow: auto;
+    }
+
+    .talk_input {
+        width: 580px;
+        margin: 10px auto 0;
+    }
+
+    .whotalk {
+        width: 80px;
+        height: 30px;
+        float: left;
+        outline: none;
+    }
+
+    .talk_word {
+        width: 500px;
+        height: 26px;
+        padding: 0px;
+        float: left;
+        margin-left: 0px;
+        outline: none;
+        text-indent: 10px;
+    }
+
+    .talk_sub {
+        width: 56px;
+        height: 30px;
+        float: left;
+        margin-left: 10px;
+    }
+
+    .atalk {
+        margin: 10px;
+    }
+
+    .atalk span {
+        display: inline-block;
+        background: #0181cc;
+        border-radius: 10px;
+        color: #fff;
+        padding: 5px 10px;
+    }
+
+    .btalk {
+        margin: 10px;
+        text-align: right;
+    }
+
+    .btalk span {
+        display: inline-block;
+        background: #ef8201;
+        border-radius: 10px;
+        color: #fff;
+        padding: 5px 10px;
+    }
+</style>
+<style type="text/css">
+    .msg_board {
+        width: 322px;
+        height: 100px;
+        border: solid 1px darkcyan;
+        padding: 5px;
+        overflow-y: scroll;
+    / / 文字长度大于div宽度时换行显示 word-break: break-all;
+    }
+
+    /*set srcoll start*/
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+        background-color: #D6F2FD;
+    }
+
+    ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        /*border-radius: 5px;*/
+        background-color: #D6F2FD;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        height: 20px;
+        /*border-radius: 10px;*/
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+        background-color: #89D7F7;
+    }
+
+    /*set srcoll end*/
+</style>
+<body>
+<h4>
+    聊天室 roomId:
+    <div th:text="${roomId}" id="chatRoomId"></div>
+    创建此聊天室的小秘书userId:
+    <div th:text="${userId}" id="userId"></div>
+    <hr>
+
+    小秘书列表：
+    <table>
+        <th>
+        <td>id</td>
+        <td>小秘书姓名</td>
+        </th>
+        <tr th:each="smallSecretariesView:${smallSecretariesViews}" th:id="${smallSecretariesView.id}">
+            <th th:text="${smallSecretariesView.id}"></th>
+            <th th:text="${smallSecretariesView.username}"></th>
+        </tr>
+    </table>
+    医生列表：
+    <table>
+        <th>
+        <td>id</td>
+        <td>医生姓名</td>
+        <td>科室名称</td>
+        </th>
+        <tr th:each="doctorAndDepartView:${doctorAndDepartViews}" th:id="${doctorAndDepartView.id}">
+            <th th:text="${doctorAndDepartView.id}"></th>
+            <th th:text="${doctorAndDepartView.username}"></th>
+            <th th:text="${doctorAndDepartView.departsName}"></th>
+        </tr>
+    </table>
+
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+    <hr>
+
+</h4>
+<div class="talk_con">
+    <div style="margin-top: 10px">
+        &nbsp;&nbsp;<label>房间名</label>
+        <input id="input_roomName" size="10" maxlength="10">
+        <label>用户名</label>
+        <input id="username" size="10" maxlength="10">
+        <input type="button" value="进入聊天室" onclick="initWebSocket()"/>
+        <input type="button" value="退出聊天室" onclick="closeWs()"/><br>
+    </div>
+    <div class="talk_show" id="words">
+        <!--<div class="atalk"><span id="asay">A说：吃饭了吗？</span></div>
+        <div class="btalk"><span id="bsay">B说：还没呢，你呢？</span></div>-->
+    </div>
+    <div class="talk_input">
+        <!--<select class="whotalk" id="who">
+            <option value="0">A说：</option>
+            <option value="1">B说：</option>
+        </select>-->
+        <input type="text" class="talk_word" id="input_msg">
+        <input type="button" value="发送" class="talk_sub" onclick="send_msg()">
+    </div>
+</div>
+<!--<div class="msg_board"></div>-->
+<!--<input id=s"input_msg" size="43" maxlength="40">-->
+<!--<input type="button" value="发送" onclick="send_msg()" />-->
+</body>
+<script type="text/javascript">
+    var webSocket;
+
+    function send_msg() {
+        if (webSocket != null) {
+            var input_msg = document.getElementById("input_msg").value.trim();
+            if (input_msg == "") {
+                return;
+            }
+            webSocket.send(input_msg);
+            // 清除input框里的信息
+            document.getElementById("input_msg").value = "";
+        } else {
+            alert("您已掉线，请重新进入聊天室...");
+        }
+    };
+
+    function closeWs() {
+        webSocket.close();
+    };
+
+    function initWebSocket() {
+        var roomName = document.getElementById("chatRoomId").innerText;
+        var username = document.getElementById("userId").innerText;
+
+        // console.log("111111111111111111111")
+        // console.log(roomName);
+        // console.log("111111111111111111111")
+
+        //var roomName = document.getElementById("input_roomName").value;
+        // 房间名不能为空
+        // if (roomName == null || roomName == "") {
+        //     alert("请输入房间名");
+        //     return;
+        // }
+        //var username = document.getElementById("username").value.trim();
+        // if (username == "" || username == null) {
+        //     alert("用户名不能为空")
+        //     return;
+        // }
+        if ("WebSocket" in window) {
+            // alert("您的浏览器支持 WebSocket!");
+            if (webSocket == null) {
+                var url = "ws://localhost:9527/webSocket/chat/" + roomName + "/" + username;
+                // 打开一个 web socket
+                webSocket = new WebSocket(url);
+            } else {
+                alert("您已进入聊天室...");
+            }
+
+            webSocket.onopen = function () {
+                alert("已进入聊天室，畅聊吧...");
+            };
+
+            webSocket.onmessage = function (evt) {
+                var Words = document.getElementById("words");
+                //得到返回的数据
+                var received_msg = evt.data;
+                var userName = document.getElementById("userId").innerText;
+                if (received_msg.split(":")[0] === userName) {
+                    var str = '<div class="btalk"><span id="bsay">' + received_msg + '</span></div>';
+                } else
+                    var str = '<div class="atalk"><span id="asay">' + received_msg + '</span></div>';
+                Words.innerHTML = Words.innerHTML + str;
+                Words.scrollTop = Words.scrollHeight;
+            };
+            webSocket.onclose = function () {
+                // 关闭 websocket，清空信息板
+                alert("连接已关闭...");
+                webSocket = null;
+                document.getElementsByClassName("msg_board")[0].innerHTML = "";
+            };
+        } else {
+            // 浏览器不支持 WebSocket
+            alert("您的浏览器不支持 WebSocket!");
+        }
+    }
+</script>
+</html>

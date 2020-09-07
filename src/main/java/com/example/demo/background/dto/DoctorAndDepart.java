@@ -8,6 +8,6 @@ public class DoctorAndDepart {
     private String tel_num;
     private String wx_num;
     private String username;
-    //private String departId;
+    private String departId;
     private String departsName;
 }

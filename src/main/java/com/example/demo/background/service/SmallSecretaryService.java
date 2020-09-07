@@ -11,4 +11,5 @@ public interface SmallSecretaryService {
     SmallSecretary findById(Long id);
     Boolean updateById(Long id, String username, String telNum, String wxNum);
     List<SmallSecretary> fuzzyFind(String name);
+
 }

@@ -13,6 +13,8 @@ public interface ChatRoomMapper {
     @Select("select * from chat_room")
     List<ChatRoom> findAll();
 
-    @Insert("insert into chat_room(name,create_date,create_admin_id,depart_id,state) values(#{name},#{createTime},#{createAdminId},#{departId},#{state})" )
+    @Insert("insert into chat_room(name,create_date,create_admin_id,depart_id,state) values (#{name},#{createTime},#{createAdminId},#{departId},#{state})" )
     Boolean addChatRoom(String name, Date createTime, Long createAdminId, Long departId, boolean state);
+
+
 }

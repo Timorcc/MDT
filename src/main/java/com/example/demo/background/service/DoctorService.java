@@ -20,4 +20,6 @@ public interface DoctorService {
     Boolean deleteRDDByDoctorId(Long id);
 
     Boolean updateRDDByDoctorId(Long id, List<String> docDepartList);
+
+    List<DoctorAndDepart> findDoctorByDepartId(Long id);
 }

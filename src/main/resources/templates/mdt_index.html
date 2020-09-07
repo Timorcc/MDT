@@ -10,64 +10,66 @@
     <title>index</title>
 </head>
 <body>
-    <div>
-        聊天室列表
-        <div class="layui-form">
-            <!--医生列表Table-->
-            <table class="layui-table">
-                <colgroup>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="10%"/>
-                    <col width="auto"/>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"/></th>
-                    <th>聊天室id</th>
-                    <th>聊天室名称</th>
-                    <th>聊天室创建时间</th>
-                    <th>聊天室创建者的id</th>
-                    <th>聊天室所属科室</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
-                    <td><input type="checkbox" name="f" lay-skin="primary" lay-filter='itemChoose'
-                               th:value="${chatRoomView.id}"/></td>
-                    <td th:text="${chatRoomView.id}"></td>
-                    <td th:text="${chatRoomView.name}"></td>
-                    <td th:text="${chatRoomView.create_date}"></td>
-                    <td th:text="${chatRoomView.create_admin_id}"></td>
-                    <td th:text="${chatRoomView.create_admin_id}"></td>
-                    <td>
-                        <a title="修改信息" data-method="join" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+<div>
+    聊天室列表
+
+    <!--医生列表Table-->
+    <table class="layui-table">
+        <colgroup>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="10%"/>
+            <col width="auto"/>
+        </colgroup>
+        <thead>
+        <tr>
+
+            <th>聊天室id</th>
+            <th>聊天室名称</th>
+            <th>聊天室创建时间</th>
+            <th>聊天室创建者的id</th>
+            <th>聊天室所属科室</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
+
+            <td th:text="${chatRoomView.id}"></td>
+            <td th:text="${chatRoomView.name}"></td>
+            <td th:text="${chatRoomView.create_date}"></td>
+            <td th:text="${chatRoomView.create_admin_id}"></td>
+            <td th:text="${chatRoomView.create_admin_id}"></td>
+            <td>
+                <!--/{roomId}(roomId=${chatRoomView.id})/{userId}(userId=${session.id})-->
+                <!--<a th:href="@{'group/get?get='+${}}">-->
+                <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
+                <a title="修改信息" data-method="join" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+<div>
+    添加聊天室
+    <div class="layui-inline">
+        <button type="button" class="layui-btn  tanchuang" id="add" data-method="addChatRoom"><i
+                class="layui-icon">&#xe61f;</i>添加聊天室
+        </button>
     </div>
-    <div>
-        添加聊天室
-        <div class="layui-inline">
-            <button type="button" class="layui-btn  tanchuang" id="add" data-method="addChatRoom"><i
-                    class="layui-icon">&#xe61f;</i>添加聊天室
-            </button>
-        </div>
-    </div>
-    <hr>
-    <hr>
-    <hr>
-    你的登录信息：
-    <span th:text="${session.id}"></span>
-    <span th:text="${session.username}"></span>
-    <span th:text="${session.telNum}"></span>
-    <span th:text="${session.wxNum}"></span>
+</div>
+<hr>
+<hr>
+<hr>
+你的登录信息：
+<span th:text="${session.id}"></span>
+<span th:text="${session.username}"></span>
+<span th:text="${session.telNum}"></span>
+<span th:text="${session.wxNum}"></span>
 </body>
 
 <script type="text/javascript" src="/layui/layui.js" th:src="@{/layui/layui.js}"></script>
@@ -93,7 +95,20 @@
                     content: "chatRoom/add"
                     /*]]>*/
                 });
-            }
+            },
+            //添加新的聊天室
+            chatRoom: function () {
+                layer.open({
+                    type: 2
+                    , title: '聊天室'
+                    , area: ['820px', '470px']
+                    , shade: 0.8
+                    , maxmin: true,
+                    /*<![CDATA[*/
+                    content: "chat/add"
+                    /*]]>*/
+                });
+            },
         };
 
         //启用弹出层

@@ -30,6 +30,11 @@ public class WebSocketController {
         }
     }
 
+    @RequestMapping("test")
+    public String toChat(){
+        return "chat";
+    }
+
 
 
 

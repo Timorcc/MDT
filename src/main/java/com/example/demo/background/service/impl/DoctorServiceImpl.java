@@ -92,4 +92,14 @@ public class DoctorServiceImpl implements DoctorService {
             return false;
         }
     }
+
+    @Override
+    public List<DoctorAndDepart> findDoctorByDepartId(Long id) {
+        try {
+            return doctorMapper.findDoctorByDepartId(id);
+        }catch (Exception e){
+            log.error(e.toString());
+            return null;
+        }
+    }
 }

@@ -26,7 +26,6 @@ public class UserController {
         return "mdt_login";
     }
 
-
     @RequestMapping(value = "mdt/mdt_index")
     public String index(HttpServletRequest request, Model model) {
         Object username = request.getSession().getAttribute("username");
@@ -46,6 +45,7 @@ public class UserController {
     public Map<String, Object> login(HttpServletRequest request,
                                      @RequestParam(name = "telNum") String telNum,
                                      @RequestParam(name = "wxNum") String wxNum) {
+
         Map<String, Object> map = new HashMap<>();
         map = userService.login(telNum, wxNum, request);
         return map;

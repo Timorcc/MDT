@@ -44,4 +44,8 @@ public interface DoctorMapper {
     //在关联表中添加医生id 科室id
     @Insert("insert into relevance_doc_depart(doc_id,depart_id) values (#{doc_id},#{depart_id})")
     Boolean addRDD(Long doc_id, Long depart_id);
+
+    //根据科室id 查 医生
+    @Select("SELECT doc.id, doc.tel_num,doc.wx_num,doc.username,dep.id as departId,dep.depart_name as departsName FROM doctor doc LEFT JOIN relevance_doc_depart rdd on rdd.doc_id = doc.id LEFT JOIN department dep on dep.id = rdd.depart_id where depart_id = #{id}")
+    List<DoctorAndDepart> findDoctorByDepartId(Long id);
 }
