@@ -63,7 +63,7 @@
                     <dl class="layui-nav-child">
                         <dd th:if="${session.username} eq 'root'">
                             <a href="javascript:;" kit-target=""
-                               data-options="{url:'doctorList',icon:'&#xe66f;',title:'用户管理',id:'31'}">
+                               data-options="{url:'doctorList',icon:'&#xe66f;',title:'医生管理',id:'31'}">
                                 <i class="layui-icon">&#xe66f;</i><span> 医生列表</span></a>
                         </dd>
                     </dl>
@@ -74,7 +74,7 @@
                     <dl class="layui-nav-child">
                         <dd th:if="${session.username} eq 'root'">
                             <a href="javascript:;" kit-target=""
-                               data-options="{url:'departmentList',icon:'&#xe66f;',title:'用户管理',id:'41'}">
+                               data-options="{url:'departmentList',icon:'&#xe66f;',title:'科室管理',id:'41'}">
                                 <i class="layui-icon">&#xe66f;</i><span> 科室列表</span></a>
                         </dd>
                     </dl>
@@ -85,8 +85,8 @@
                     <dl class="layui-nav-child">
                         <dd th:if="${session.username} eq 'root'">
                             <a href="javascript:;" kit-target=""
-                               data-options="{url:'admin/list/show',icon:'&#xe66f;',title:'用户管理',id:'51'}">
-                                <i class="layui-icon">&#xe66f;</i><span> 聊天室列表</span></a>
+                               data-options="{url:'chatRoom',icon:'&#xe66f;',title:'聊天室管理',id:'51'}">
+                                <i class="layui-icon">&#xe66f;</i><span>聊天室列表</span></a>
                         </dd>
                     </dl>
                 </li>

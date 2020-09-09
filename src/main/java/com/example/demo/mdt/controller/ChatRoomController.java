@@ -60,15 +60,11 @@ public class ChatRoomController {
     public String toChatRoom(Model model, @PathVariable("roomId") String roomId,@PathVariable("userId") String userId){
         List<DoctorAndDepart> doctorAndDepartViews = doctorService.findDoctorByDepartId(Long.valueOf(roomId));
         List<SmallSecretary> smallSecretariesViews = smallSecretaryService.getSmallSecretaryList();
-//        System.out.println("|||||||||||");
-//        System.out.println("根据roomId 查到的 医生有："+ doctorAndDepartViews);
-//        System.out.println("所有的小秘书："+ smallSecretariesViews);
-//        System.out.println("|||||||||||");
-//        System.out.println("roomId is =-->"+roomId+"userId"+userId);
         model.addAttribute("doctorAndDepartViews",doctorAndDepartViews);
         model.addAttribute("smallSecretariesViews",smallSecretariesViews);
         model.addAttribute("roomId",roomId);
         model.addAttribute("userId",userId);
+
         return "chat";
     }
 
