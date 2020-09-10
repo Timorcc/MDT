@@ -16,7 +16,7 @@
 <body>
 <div class="left">
 
-    <span th:text="${session.username}"></span>
+<!--    <span th:text="${session.username}"></span>-->
     <!--添加聊天室表单-->
     <form class="layui-form" action="">
         <!--填写聊天室的名称-->
@@ -29,7 +29,6 @@
         </div>
         <!--选择当前的聊天室所属的科室-->
         <label class="layui-form-label">选择所属的科室</label>
-
         <div class="layui-input-block">
             <select name="city" lay-verify="filter">
                 <div th:each="department:${departmentViews}" th:id="${department.id}">
@@ -37,16 +36,7 @@
                 </div>
 
             </select>
-<!--            <div th:each="department:${departmentViews}" th:id="${department.id}">-->
-<!--                <div>-->
-<!--                    <input lay-filter="filter"-->
-<!--                           type="radio"-->
-<!--                           th:value="${department.id}"-->
-<!--                           th:text="${department.id}+${department.depart_name}"-->
-<!--                    >-->
-<!--                </div>-->
 
-<!--            </div>-->
         </div>
         <div class="layui-form-item">
             <div class="layui-form-item">
@@ -56,7 +46,6 @@
             </div>
         </div>
     </form>
-
 </div>
 <script type="text/javascript" src="/layui/layui.js" th:src="@{/layui/layui.js}"></script>
 <script type="text/javascript" th:inline="javascript">
@@ -75,9 +64,6 @@
            //console.log(data.othis); //得到美化后的DOM对象
             depart_id = data.value;
         });
-
-
-
         //监听提交
         form.on('submit(formDemo)', function (data) {
             $.ajax({

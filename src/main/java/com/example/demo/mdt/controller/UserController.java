@@ -1,5 +1,7 @@
 package com.example.demo.mdt.controller;
 
+import com.example.demo.background.dto.ChatRoomAndMessage;
+import com.example.demo.background.service.ChatRoomAndMessageService;
 import com.example.demo.mdt.entity.ChatRoom;
 import com.example.demo.mdt.service.ChatRoomService;
 import com.example.demo.mdt.service.UserService;
@@ -20,6 +22,8 @@ public class UserController {
     UserService userService;
     @Autowired
     ChatRoomService chatRoomService;
+    @Autowired
+    ChatRoomAndMessageService chatRoomAndMessageService;
 
     @GetMapping("mdt/mdt_login")
     public String loginHtml() {
@@ -34,7 +38,8 @@ public class UserController {
         if (username == null) {
             return "redirect:mdt_login";
         }
-        List<ChatRoom> chatRoomView = chatRoomService.findAll();
+        List<ChatRoomAndMessage> chatRoomView = chatRoomAndMessageService.findAll();
+        //List<ChatRoom> chatRoomView = chatRoomService.findAll();
         model.addAttribute("chatRoomViews", chatRoomView);
         return "mdt_index";
     }

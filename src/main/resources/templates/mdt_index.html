@@ -12,7 +12,6 @@
 <body>
 <div>
     聊天室列表
-
     <!--医生列表Table-->
     <table class="layui-table">
         <colgroup>
@@ -26,35 +25,36 @@
         </colgroup>
         <thead>
         <tr>
-
             <th>聊天室id</th>
             <th>聊天室名称</th>
             <th>聊天室创建时间</th>
             <th>聊天室创建者的id</th>
+            <th>聊天室创建者姓名</th>
             <th>聊天室所属科室</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
-
             <td th:text="${chatRoomView.id}"></td>
             <td th:text="${chatRoomView.name}"></td>
             <td th:text="${chatRoomView.create_date}"></td>
             <td th:text="${chatRoomView.create_admin_id}"></td>
-            <td th:text="${chatRoomView.create_admin_id}"></td>
+            <td th:text="${chatRoomView.username}"></td>
+            <td th:text="${chatRoomView.depart_name}"></td>
             <td>
                 <!--/{roomId}(roomId=${chatRoomView.id})/{userId}(userId=${session.id})-->
                 <!--<a th:href="@{'group/get?get='+${}}">-->
                 <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
-                <a title="修改信息" data-method="join" class="tanchuang"><i class="layui-icon">&#xe642;</i></a>
+
+                <a title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
             </td>
         </tr>
         </tbody>
     </table>
 
 </div>
-<div>
+<div th:if="${session.id}<9000">
     添加聊天室
     <div class="layui-inline">
         <button type="button" class="layui-btn  tanchuang" id="add" data-method="addChatRoom"><i
@@ -96,19 +96,23 @@
                     /*]]>*/
                 });
             },
-            //添加新的聊天室
-            chatRoom: function () {
+
+            closeChatRoom: function (othis) {
+                var id = $(othis).parent('td').parent('tr').attr('id');
+                console.log("需要关闭的聊天室为:");
+                console.log(id);
                 layer.open({
                     type: 2
-                    , title: '聊天室'
+                    , title: '添加诊断结论&&关闭聊天室'
                     , area: ['820px', '470px']
                     , shade: 0.8
                     , maxmin: true,
                     /*<![CDATA[*/
-                    content: "chat/add"
+                    content: "chatRoom/closeChatRoom/?id=" + id
                     /*]]>*/
                 });
             },
+
         };
 
         //启用弹出层

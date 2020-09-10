@@ -35,6 +35,7 @@ public class ChatRoomController {
 
     @GetMapping("mdt/chatRoom/add")
     public String addChatRoom(Model model) {
+       // List<>
         List<Department> departmentViews = departmentService.findAll();
         model.addAttribute("departmentViews", departmentViews);
         return "mdt_chat_add";
@@ -47,7 +48,6 @@ public class ChatRoomController {
         Map<String, Object> map = new HashMap<>();
         String chatRoomName = request.getParameter("chatRoomName").trim();
         String depart_id = request.getParameter("depart_id").trim().replace("\"", "");
-        ;
         Object username = request.getSession().getAttribute("username");
         Object id = request.getSession().getAttribute("id");
         Date date = new Date();
@@ -64,8 +64,7 @@ public class ChatRoomController {
         model.addAttribute("smallSecretariesViews",smallSecretariesViews);
         model.addAttribute("roomId",roomId);
         model.addAttribute("userId",userId);
-
-        return "chat";
+        return "mdt_chatRoom";
     }
 
 }
