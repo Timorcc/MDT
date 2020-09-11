@@ -1,5 +1,7 @@
 package com.example.demo.mdt.server;
 
+import com.example.demo.background.entity.Doctor;
+import com.example.demo.background.service.DoctorService;
 import com.example.demo.mdt.config.MyApplicationContextAware;
 import com.example.demo.mdt.entity.Message;
 import com.example.demo.mdt.service.MessageService;
@@ -25,8 +27,7 @@ public class WebSocketServer {
     private static final Map<String, Set<Session>> rooms = new ConcurrentHashMap();
     private static final Map<String, String> userNameList = new ConcurrentHashMap();
     private MessageService messageServiceImpl = (MessageService) MyApplicationContextAware.getApplicationContext().getBean("messageServiceImpl");
-    //private MessageService smallSecretaryImpl = (SmallSecretaryService) MyApplicationContextAware.getApplicationContext().getBean("smallSecretaryServiceImpl");
-    //private MessageService doctorImpl = (MessageService) MyApplicationContextAware.getApplicationContext().getBean("docServiceImpl");
+    private DoctorService doctorServiceImpl = (DoctorService) MyApplicationContextAware.getApplicationContext().getBean("doctorServiceImpl");
 
     @OnOpen
     public void connect(@PathParam("roomName") String roomName,@PathParam("userId") String userId, Session session) throws Exception {
@@ -46,6 +47,7 @@ public class WebSocketServer {
         System.out.println("a client has connected!");
         System.out.println("-----------------------");
         List<Message> messageList = messageServiceImpl.findMessageByChatRoomId(Long.valueOf(roomName));
+
         for (Message message:messageList
              ) {
             String history = message.getSender()+":"+message.getContent();
@@ -64,8 +66,13 @@ public class WebSocketServer {
     public void receiveMsg(@PathParam("roomName") String roomName,@PathParam("userId") String userId,
                            String msg, Session session) throws Exception {
         Date data =new Date();
+//        Doctor doctor = doctorServiceImpl.findById(Long.valueOf(userId));
+//        String username = doctor.getUsername();
+//        System.out.println("{{{{{{{{{{{{{{{");
+//        System.out.println(username);
+//        System.out.println("}}}}}}}}}}}}}}}");
         boolean re = messageServiceImpl.insertMessage(Long.valueOf(roomName),Long.valueOf(userId),data,msg);
-        msg = userId + ":" + msg;
+        msg = userId  + ":" + msg;
         // 接收到信息后进行广播
         broadcast(roomName, msg);
     }
@@ -73,7 +80,6 @@ public class WebSocketServer {
     // 按照房间名进行广播
     public static void broadcast(String roomName, String msg) throws Exception {
         for (Session session : rooms.get(roomName)) {
-            System.out.println("session:-->"+session.getBasicRemote());
             session.getBasicRemote().sendText(msg);
         }
     }

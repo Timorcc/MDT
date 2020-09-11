@@ -28,7 +28,7 @@ public class WebSocketController {
 
     @RequestMapping("test")
     public String toChat(){
-        return "mdt_ChatRoom";
+        return "mdt_chatRoom";
     }
 
 

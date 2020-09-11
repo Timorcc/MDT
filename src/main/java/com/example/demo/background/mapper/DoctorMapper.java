@@ -48,4 +48,9 @@ public interface DoctorMapper {
     //根据科室id 查 医生
     @Select("SELECT doc.id, doc.tel_num,doc.wx_num,doc.username,dep.id as departId,dep.depart_name as departsName FROM doctor doc LEFT JOIN relevance_doc_depart rdd on rdd.doc_id = doc.id LEFT JOIN department dep on dep.id = rdd.depart_id where depart_id = #{id}")
     List<DoctorAndDepart> findDoctorByDepartId(Long id);
+
+    //根据聊天室的id查询其中的医生及其所属的科室
+    @Select("SELECT doc.id,doc.tel_num,doc.wx_num,doc.username,dep.id as departId,dep.depart_name as departsName FROM doctor doc LEFT JOIN relevance_doc_depart rdd on rdd.doc_id = doc.id LEFT JOIN department dep on dep.id = rdd.depart_id where depart_id= (SELECT c.depart_id FROM chat_room c WHERE id=#{id})")
+    List<DoctorAndDepart> findDoctorByChatRoomId(Long id);
 }
+

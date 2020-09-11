@@ -21,7 +21,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     public List<ChatRoom> findAll() {
         try {
             return chatRoomMapper.findAll();
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error(e.toString());
             return null;
         }
@@ -30,8 +30,18 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     public Boolean addChatRoom(String name, Date createTime, Long createAdminId, Long departId, boolean state) {
         try {
-            return chatRoomMapper.addChatRoom(name,createTime,createAdminId,departId,state);
-        }catch (Exception e){
+            return chatRoomMapper.addChatRoom(name, createTime, createAdminId, departId, state);
+        } catch (Exception e) {
+            log.error(e.toString());
+            return false;
+        }
+    }
+
+    @Override
+    public Boolean updateChatRoomConclusion(Long id, Date endDate, String conclusion) {
+        try {
+            return chatRoomMapper.updateChatRoomConclusion(id, endDate, conclusion);
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }

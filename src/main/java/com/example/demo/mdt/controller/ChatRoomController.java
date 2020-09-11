@@ -35,7 +35,7 @@ public class ChatRoomController {
 
     @GetMapping("mdt/chatRoom/add")
     public String addChatRoom(Model model) {
-       // List<>
+
         List<Department> departmentViews = departmentService.findAll();
         model.addAttribute("departmentViews", departmentViews);
         return "mdt_chat_add";
@@ -55,16 +55,42 @@ public class ChatRoomController {
         map.put("state", state);
         return map;
     }
+
     /*根据roomId&userId跳转到聊天室页面*/
     @GetMapping("/mdt/chat/{roomId}/{userId}")
-    public String toChatRoom(Model model, @PathVariable("roomId") String roomId,@PathVariable("userId") String userId){
-        List<DoctorAndDepart> doctorAndDepartViews = doctorService.findDoctorByDepartId(Long.valueOf(roomId));
+    public String toChatRoom(Model model, @PathVariable("roomId") String roomId, @PathVariable("userId") String userId) {
+//        System.out.println("接收到的roomid是");
+//        System.out.println(roomId);
+        List<DoctorAndDepart> doctorAndDepartViews = doctorService.findDoctorByChatRoomId(Long.valueOf(roomId));
         List<SmallSecretary> smallSecretariesViews = smallSecretaryService.getSmallSecretaryList();
-        model.addAttribute("doctorAndDepartViews",doctorAndDepartViews);
-        model.addAttribute("smallSecretariesViews",smallSecretariesViews);
-        model.addAttribute("roomId",roomId);
-        model.addAttribute("userId",userId);
+        model.addAttribute("doctorAndDepartViews", doctorAndDepartViews);
+        model.addAttribute("smallSecretariesViews", smallSecretariesViews);
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("userId", userId);
+//        System.out.println("======================");
+//        System.out.println(doctorAndDepartViews);
+//        System.out.println(smallSecretariesViews);
+//        System.out.println("======================");
         return "mdt_chatRoom";
     }
 
+    /*跳转到关闭聊天室弹窗*/
+    @GetMapping("/mdt/chatRoom/closeChatRoom")
+    public String toCloseChatRoom(HttpServletRequest request, Model model) {
+        String chatRoomId = request.getParameter("id");
+        model.addAttribute("chatRoomId", chatRoomId);
+        return "mdt_chat_close";
+    }
+    /*实现关闭聊天室功能*/
+    @PostMapping("/mdt/chatRoom/closeChatRoom/post")
+    @ResponseBody
+    public Map<String, Object> closeChatRoom(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+        String conclusion = request.getParameter("conclusion").trim();
+        String chatRoomId = request.getParameter("chatRoomId").trim();
+        Date date = new Date();
+        boolean re = chatRoomService.updateChatRoomConclusion(Long.valueOf(chatRoomId),date,conclusion);
+        map.put("state", re);
+        return map;
+    }
 }

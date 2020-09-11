@@ -94,9 +94,20 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorAndDepart> findDoctorByDepartId(Long id) {
+    public List<DoctorAndDepart> findDoctorByChatRoomId(Long id) {
         try {
-            return doctorMapper.findDoctorByDepartId(id);
+            //return doctorMapper.findDoctorByDepartId(id);
+            return doctorMapper.findDoctorByChatRoomId(id);
+        }catch (Exception e){
+            log.error(e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Doctor findById(Long id) {
+        try {
+            return doctorMapper.findById(id);
         }catch (Exception e){
             log.error(e.toString());
             return null;

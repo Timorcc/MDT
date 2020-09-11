@@ -21,5 +21,7 @@ public interface DoctorService {
 
     Boolean updateRDDByDoctorId(Long id, List<String> docDepartList);
 
-    List<DoctorAndDepart> findDoctorByDepartId(Long id);
+    List<DoctorAndDepart> findDoctorByChatRoomId(Long id);
+
+    Doctor findById(Long id);
 }

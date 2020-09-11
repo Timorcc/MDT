@@ -13,5 +13,5 @@ public class ChatRoom {
     private Boolean state;
     private Date end_date;
     private Long depart_id;
-
+    private String conclusion;
 }

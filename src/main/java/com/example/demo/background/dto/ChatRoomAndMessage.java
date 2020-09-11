@@ -15,5 +15,6 @@ public class ChatRoomAndMessage {
     private Boolean state;//聊天室室的状态 true：可以聊天.false:聊天已结束，不能再聊天
     private Long depart_id;//聊天的所属科室
     private String depart_name;//聊天室所属科室的名称
-    private String conclusion;
+    private String conclusion;//聊天室诊断结论
+
 }

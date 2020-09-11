@@ -31,24 +31,26 @@
             <th>聊天室创建者的id</th>
             <th>聊天室创建者姓名</th>
             <th>聊天室所属科室</th>
+            <th>聊天室状态</th>
             <th>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="chatRoomView:${chatRoomViews}" th:id="${chatRoomView.id}">
-            <td th:text="${chatRoomView.id}"></td>
-            <td th:text="${chatRoomView.name}"></td>
-            <td th:text="${chatRoomView.create_date}"></td>
-            <td th:text="${chatRoomView.create_admin_id}"></td>
-            <td th:text="${chatRoomView.username}"></td>
-            <td th:text="${chatRoomView.depart_name}"></td>
-            <td>
-                <!--/{roomId}(roomId=${chatRoomView.id})/{userId}(userId=${session.id})-->
-                <!--<a th:href="@{'group/get?get='+${}}">-->
-                <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
+            <div th:if="${chatRoomView.state} eq true ">
+                <td th:text="${chatRoomView.id}"></td>
+                <td th:text="${chatRoomView.name}"></td>
+                <td th:text="${chatRoomView.create_date}"></td>
+                <td th:text="${chatRoomView.create_admin_id}"></td>
+                <td th:text="${chatRoomView.username}"></td>
+                <td th:text="${chatRoomView.depart_name}"></td>
+                <td th:text="${chatRoomView.state}"></td>
 
-                <a title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
-            </td>
+                <td>
+                    <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
+                    <a title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
+                </td>
+            </div>
         </tr>
         </tbody>
     </table>
