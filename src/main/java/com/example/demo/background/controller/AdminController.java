@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,6 +42,16 @@ public class AdminController {
         Map<String, Object> map = new HashMap<>();
         map = adminService.login(username, password, request);
         return map;
+    }
+    //注销
+    @RequestMapping(value = "background/logout")
+    public String loginout(HttpServletRequest request) {
+        //false代表：不创建session对象，只是从request中获取。
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.removeAttribute("username");
+        }
+        return "redirect:login";
     }
 
 }

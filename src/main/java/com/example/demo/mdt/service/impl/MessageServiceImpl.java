@@ -27,9 +27,9 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content) {
+    public Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content,String username) {
         try {
-            return messageMapper.insertMessage(chatRoomId,userId,date,content);
+            return messageMapper.insertMessage(chatRoomId,userId,date,content,username);
         }catch (Exception e){
             log.error(e.toString());
             return false;

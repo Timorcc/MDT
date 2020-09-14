@@ -35,17 +35,18 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="kitNavbar" kit-navbar="">
                 <!--大秘书管理-->
-                <li class="layui-nav-item">
-                    <a class="" href="javascript:;"><i class="layui-icon">&#xe612;</i><span> 大秘书管理</span></a>
-                    <dl class="layui-nav-child">
-                        <dd>
-                            <a href="javascript:;" kit-target=""
-                               data-options="{url:'bigsecretarylist',icon:'&#xe612;',title:'大秘书列表',id:'11'}">
-                                <i class="layui-icon">&#xe612;</i><span> 大秘书列表</span></a>
-                        </dd>
-                    </dl>
-                </li>
-
+                <div th:if="${session.username}==root">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe612;</i><span> 大秘书管理</span></a>
+                        <dl class="layui-nav-child">
+                            <dd>
+                                <a href="javascript:;" kit-target=""
+                                   data-options="{url:'bigsecretarylist',icon:'&#xe612;',title:'大秘书列表',id:'11'}">
+                                    <i class="layui-icon">&#xe612;</i><span> 大秘书列表</span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                </div>
                 <!--小秘书管理-->
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;"><i class="layui-icon">&#xe770;</i><span> 小秘书管理</span></a>
@@ -61,7 +62,7 @@
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 医生管理</span></a>
                     <dl class="layui-nav-child">
-                        <dd th:if="${session.username} eq 'root'">
+                        <dd>
                             <a href="javascript:;" kit-target=""
                                data-options="{url:'doctorList',icon:'&#xe66f;',title:'医生管理',id:'31'}">
                                 <i class="layui-icon">&#xe66f;</i><span> 医生列表</span></a>
@@ -69,10 +70,11 @@
                     </dl>
                 </li>
                 <!--科室管理-->
+
                 <li class="layui-nav-item">
                     <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 科室管理</span></a>
                     <dl class="layui-nav-child">
-                        <dd th:if="${session.username} eq 'root'">
+                        <dd>
                             <a href="javascript:;" kit-target=""
                                data-options="{url:'departmentList',icon:'&#xe66f;',title:'科室管理',id:'41'}">
                                 <i class="layui-icon">&#xe66f;</i><span> 科室列表</span></a>
@@ -80,16 +82,18 @@
                     </dl>
                 </li>
                 <!--聊天室管理-->
-                <li class="layui-nav-item">
-                    <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 聊天室管理</span></a>
-                    <dl class="layui-nav-child">
-                        <dd th:if="${session.username} eq 'root'">
-                            <a href="javascript:;" kit-target=""
-                               data-options="{url:'chatRoom',icon:'&#xe66f;',title:'聊天室管理',id:'51'}">
-                                <i class="layui-icon">&#xe66f;</i><span>聊天室列表</span></a>
-                        </dd>
-                    </dl>
-                </li>
+                <div th:if="${session.username}==root">
+                    <li class="layui-nav-item">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe716;</i><span> 聊天室管理</span></a>
+                        <dl class="layui-nav-child">
+                            <dd >
+                                <a href="javascript:;" kit-target=""
+                                   data-options="{url:'chatRoom',icon:'&#xe66f;',title:'聊天室管理',id:'51'}">
+                                    <i class="layui-icon">&#xe66f;</i><span>聊天室列表</span></a>
+                            </dd>
+                        </dl>
+                    </li>
+                </div>
             </ul>
         </div>
     </div>

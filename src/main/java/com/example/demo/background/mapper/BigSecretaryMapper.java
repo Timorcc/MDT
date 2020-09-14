@@ -23,4 +23,7 @@ public interface BigSecretaryMapper {
     @Select("select * from big_secretary where username like '%${name}%'  ")
     List<BigSecretary> fuzzyFind(@Param("name") String name);
 
+    @Select("select * from big_secretary where tel_num = #{tel}")
+    BigSecretary findByTel(String tel);
+
 }

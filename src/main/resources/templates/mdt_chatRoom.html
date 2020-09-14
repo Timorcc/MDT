@@ -189,7 +189,7 @@
             //得到返回的数据
             var received_msg = evt.data;
             var userId = document.getElementById("userId").innerText;
-            if (received_msg.split(":")[0] === userId) {
+            if (received_msg.split("-")[0] === userId) {
                 var str = '<div class="btalk"><span id="bsay">' + received_msg + '</span></div>';
             } else
                 var str = '<div class="atalk"><span id="asay">' + received_msg + '</span></div>';

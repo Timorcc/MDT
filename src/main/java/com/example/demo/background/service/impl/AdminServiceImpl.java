@@ -1,7 +1,9 @@
 package com.example.demo.background.service.impl;
 
 import com.example.demo.background.entity.Admin;
+import com.example.demo.background.entity.BigSecretary;
 import com.example.demo.background.mapper.AdminMapper;
+import com.example.demo.background.mapper.BigSecretaryMapper;
 import com.example.demo.background.service.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,27 +20,50 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
+    @Autowired
+    BigSecretaryMapper bigSecretaryMapper;
+
     @Override
     public Map<String, Object> login(String username, String password, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
         try {
-            Admin bgdAdmin = adminMapper.findByUsername(username);
-            log.info("login user is  ---==》" + bgdAdmin);
-            if (bgdAdmin == null) {
+            if (adminMapper.findByUsername(username) != null) {
+                Admin bgdAdmin = adminMapper.findByUsername(username);
+                log.info("login admin is  ---==》" + bgdAdmin);
+                if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(bgdAdmin.getPassword())) {
+                    map.put("status", 1);
+                    map.put("msg", "密码错误");
+                    return map;
+                }
+                request.getSession().setAttribute("username", username);
+                request.getSession().setAttribute("id", bgdAdmin.getId());
+                map.put("status", 0);
+                map.put("msg", "登录成功");
+                return map;
+            } else if (bigSecretaryMapper.findByTel(username)!=null) {
+                BigSecretary bigSecretary = bigSecretaryMapper.findByTel(username);
+                log.info("login bigSecretary is  ---==》" + bigSecretary);
+                if (!password.equals(bigSecretary.getWx_num())) {
+                    map.put("status", 1);
+                    map.put("msg", "登录失败");
+                    return map;
+                }
+                request.getSession().setAttribute("username", bigSecretary.getUsername());
+                request.getSession().setAttribute("id", bigSecretary.getId());
+                map.put("status", 0);
+                map.put("msg", "登录成功");
+                return map;
+            }else{
                 map.put("status", 1);
                 map.put("msg", "用户名不存在");
                 return map;
             }
-            if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(bgdAdmin.getPassword())) {
-                map.put("status", 1);
-                map.put("msg", "密码错误");
-                return map;
-            }
-            request.getSession().setAttribute("username", username);
-            request.getSession().setAttribute("id", bgdAdmin.getId());
-            map.put("status", 0);
-            map.put("msg", "登录成功");
-            return map;
+
+
+//            if (bgdAdmin == null) {
+//
+//            }
+
         } catch (Exception e) {
             log.error(e.toString());
             map.put("status", 1);
