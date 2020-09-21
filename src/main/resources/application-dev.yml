@@ -17,3 +17,10 @@ logging:
     com:
       example:
         mapper: debug
+
+
+#### window 环境
+image-dir: D:\\my_web\\image\\
+
+#### linux 环境
+#image-dir: /home/binbin/image/

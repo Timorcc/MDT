@@ -78,7 +78,8 @@ public class WebSocketServer {
             username = d.getUsername();
         }
         System.out.println("username is" + username);
-        boolean re = messageServiceImpl.insertMessage(Long.valueOf(roomName), Long.valueOf(userId), data, msg, username);
+        //往数据库里存消息，文字消息type为0
+        boolean re = messageServiceImpl.insertMessage(Long.valueOf(roomName), Long.valueOf(userId), data, msg, username, "0");
         msg = userId + "-" + username + ":" + msg;
         // 接收到信息后进行广播
         broadcast(roomName, msg);

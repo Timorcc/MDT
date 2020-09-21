@@ -147,8 +147,8 @@
     <hr>
     <hr>
     <hr>
-
 </h4>
+<!--聊天室窗口-->
 <div class="talk_con">
     <div style="margin-top: 10px">
         <!--        <label>房间名</label>-->
@@ -159,15 +159,16 @@
         <input type="button" value="退出聊天室" onclick="closeWs()"/><br>
     </div>
     <div class="talk_show" id="words">
-
     </div>
     <div class="talk_input">
-
         <input type="text" class="talk_word" id="input_msg">
         <input type="button" value="发送" class="talk_sub" onclick="send_msg()">
+        <input type="file" id="uploadPic">
+        <button onclick="UploadPictureTest()">up</button>
     </div>
 </div>
 </body>
+<script language=javascript src='https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js'></script>
 <script type="text/javascript">
     var webSocket;
     var roomName = document.getElementById("chatRoomId").innerText;
@@ -224,6 +225,72 @@
     function closeWs() {
         webSocket.close();
     };
+
+    //    =============
+    //    有关文件上传的JS
+    //    =============
+    /**
+     * 获取某个文档的详细内容
+     */
+    function upImg(data) {
+        sendMultipartRequest("/mdt/image/upload_file", "POST", data, callback);
+    }
+
+    function callback(str) {
+        console.log(str);
+    }
+
+    function UploadPictureTest() {
+        var data = new FormData();
+        //只有使用enctype="multipart/form-data",才会把文件的内容编码到HTML请求中。
+        data.enctype = "multipart/form-data";
+        data.append("file", $('#uploadPic')[0].files[0]);
+        data.append("fileName", $('#uploadPic')[0].files[0].name);
+        data.append("type", $('#uploadPic')[0].files[0].type);
+        data.append("chatRoomId",roomName);
+        data.append("userId",userId);
+
+        upImg(data)
+    }
+
+
+    var base = "http://localhost:9527";
+
+    function sendRequest(url, method, data, callback) {
+        $.ajax({
+            url: base + url,
+            type: method,
+            "Access-Control-Allow-Origin": "*",
+            data: data,
+            success: function (res) {
+                if (callback) callback(res);
+            },
+            error: function (res) {
+                console.log("error");
+                console.log(res);
+            }
+        })
+    }
+
+    function sendMultipartRequest(url, method, data, callback) {
+        $.ajax({
+            url: base + url,
+            type: method,
+            "Access-Control-Allow-Origin": "*",
+            async: false,
+            processData: false,   // jQuery不要去处理发送的数据
+            contentType: false,   // jQuery不要去设置Content-Type请求头
+            data: data,
+            success: function (res) {
+                if (callback) callback(res);
+            },
+            error: function (res) {
+                console.log("error");
+                console.log(res);
+            }
+        })
+    }
+
 
 </script>
 </html>

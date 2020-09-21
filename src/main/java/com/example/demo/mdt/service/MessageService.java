@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface MessageService {
     List<Message> findMessageByChatRoomId(Long chatRoomId);
-    Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content,String username);
+    Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content,String username,String type);
 }

@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>上传</title>
+</head>
+<body>
+<input type="file" id="uploadPic" >
+<button onclick="UploadPictureTest()">up</button>
+<script language=javascript src='https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js'></script>
+<script>
+    window.onload = function (ev) {
+        // getList();
+    };
+
+    /**
+     * 获取某个文档的详细内容
+     */
+    function upImg(data) {
+        sendMultipartRequest("/mdt/image/upload_file", "POST", data, callback);
+    }
+    function callback(str) {
+        console.log(str);
+    }
+
+    function UploadPictureTest() {
+        var data = new FormData();
+        //只有使用enctype="multipart/form-data",才会把文件的内容编码到HTML请求中。
+        data.enctype = "multipart/form-data";
+        data.append("file", $('#uploadPic')[0].files[0]);
+        data.append("fileName", $('#uploadPic')[0].files[0].name);
+        data.append("type", $('#uploadPic')[0].files[0].type);
+        upImg(data)
+    }
+
+    /**
+     * 获取全部文档列表
+     */
+    function getList() {
+        sendRequest("/mdt/markdown/list", "GET", {}, function (data) {
+            data.split(",").forEach(function (value) {
+                $("#side").append("<a onclick='getText(\"" + value + "\")'>" + value + "</a></br>")
+            })
+        });
+    }
+
+    /**
+     * 获取某个文档的详细内容
+     */
+    function getText(book) {
+        sendRequest("/markdown/" + book, "GET", {}, renderMarkdown);
+    }
+
+    /**
+     * 渲染 markdown， 参考链接：
+     * https://www.jianshu.com/p/747d6f8dddb0
+     * https://github.com/markedjs/marked
+     */
+    function renderMarkdown(str) {
+        // '# Marked in the browser\n\nRendered by **marked**.'
+        document.getElementById('content').innerHTML =
+            marked(str);
+    }
+    var base = "http://localhost:9527";
+    function sendRequest(url, method, data, callback) {
+        $.ajax({
+            url: base + url,
+            type: method,
+            "Access-Control-Allow-Origin": "*",
+            data: data,
+            success: function (res) {
+                if (callback) callback(res);
+            },
+            error: function (res) {
+                console.log("error");
+                console.log(res);
+            }
+        })
+    }
+
+    function sendMultipartRequest(url, method, data, callback) {
+        $.ajax({
+            url: base + url,
+            type: method,
+            "Access-Control-Allow-Origin": "*",
+            async: false,
+            processData: false,   // jQuery不要去处理发送的数据
+            contentType: false,   // jQuery不要去设置Content-Type请求头
+            data: data,
+            success: function (res) {
+                if (callback) callback(res);
+            },
+            error: function (res) {
+                console.log("error");
+                console.log(res);
+            }
+        })
+    }
+</script>
+</body>
+</html>

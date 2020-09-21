@@ -45,16 +45,14 @@
                 <td th:text="${chatRoomView.username}"></td>
                 <td th:text="${chatRoomView.depart_name}"></td>
                 <td th:text="${chatRoomView.state}"></td>
-
                 <td>
                     <a th:href="@{'/mdt/chat/'+${chatRoomView.id}+'/'+${session.id}}">进入聊天室</a>
-                    <a title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
+                    <a th:if="${session.id}<9000" title="修改信息" data-method="closeChatRoom" class="tanchuang">关闭聊天室</a>
                 </td>
             </div>
         </tr>
         </tbody>
     </table>
-
 </div>
 <div th:if="${session.id}<9000">
     添加聊天室

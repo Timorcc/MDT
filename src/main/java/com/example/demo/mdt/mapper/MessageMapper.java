@@ -15,7 +15,7 @@ public interface MessageMapper {
     @Select("select * from  chat_message  where chatroom_id = #{chatRoomId} order by send_date ")
     List<Message> findMessageByChatRoomId(Long chatRoomId);
 
-    @Insert("insert into chat_message(chatroom_id,sender,send_date,content,username) values (#{chatRoomId},#{userId},#{date},#{content},#{username})")
+    @Insert("insert into chat_message(chatroom_id,sender,send_date,content,username,type) values (#{chatRoomId},#{userId},#{date},#{content},#{username},#{type})")
     Boolean insertMessage(@Param("chatRoomId") Long chatRoomId,@Param("userId") Long userId,
-                          @Param("date") Date date,@Param("content") String content,String username);
+                          @Param("date") Date date,@Param("content") String content,String username,String type);
 }

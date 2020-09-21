@@ -19,7 +19,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> findMessageByChatRoomId(Long chatRoomId) {
         try {
-          return messageMapper.findMessageByChatRoomId(chatRoomId);
+            return messageMapper.findMessageByChatRoomId(chatRoomId);
         } catch (Exception e) {
             log.error(e.toString());
             return null;
@@ -27,10 +27,10 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content,String username) {
+    public Boolean insertMessage(Long chatRoomId, Long userId, Date date, String content, String username, String type) {
         try {
-            return messageMapper.insertMessage(chatRoomId,userId,date,content,username);
-        }catch (Exception e){
+            return messageMapper.insertMessage(chatRoomId, userId, date, content, username,type);
+        } catch (Exception e) {
             log.error(e.toString());
             return false;
         }

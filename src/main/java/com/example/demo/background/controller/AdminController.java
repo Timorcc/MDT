@@ -40,7 +40,7 @@ public class AdminController {
                                      @RequestParam(name = "username") String username,
                                      @RequestParam(name = "password") String password) {
         Map<String, Object> map = new HashMap<>();
-        map = adminService.login(username, password, request);
+        map = adminService .login(username, password, request);
         return map;
     }
     //注销
