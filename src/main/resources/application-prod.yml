@@ -1,0 +1,26 @@
+server:
+  port: 29527
+spring:
+  datasource:
+    username: root
+    password: qlyy123
+    url: jdbc:mysql://113.128.221.48:3306/mdttest?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.example.demo.background.entity
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper: debug
+
+
+#### window 环境
+#image-dir: D:\\my_web\\image\\
+
+### linux 环境
+image-dir: /home/mdt/images/

@@ -77,14 +77,7 @@
     }
 </style>
 <style type="text/css">
-    .msg_board {
-        width: 322px;
-        height: 100px;
-        border: solid 1px darkcyan;
-        padding: 5px;
-        overflow-y: scroll;
-    / / 文字长度大于div宽度时换行显示 word-break: break-all;
-    }
+
 
     /*set srcoll start*/
     ::-webkit-scrollbar {
@@ -110,6 +103,9 @@
 </style>
 <body>
 <h4>
+    ===========
+    <img src=/img/code.jpg alt="">
+    ===========
     聊天室 roomId:
     <div th:text="${roomId}" id="chatRoomId"></div>
     创建此聊天室的小秘书userId:
@@ -141,7 +137,6 @@
             <th th:text="${doctorAndDepartView.departsName}"></th>
         </tr>
     </table>
-
     <hr>
     <hr>
     <hr>
@@ -151,11 +146,6 @@
 <!--聊天室窗口-->
 <div class="talk_con">
     <div style="margin-top: 10px">
-        <!--        <label>房间名</label>-->
-        <!--        <input id="input_roomName" size="10" maxlength="10">-->
-        <!--        <label>用户名</label>-->
-        <!--        <input id="userId" size="10" maxlength="10">-->
-        <!--        <input type="button" value="进入聊天室" onclick="initWebSocket()"/>-->
         <input type="button" value="退出聊天室" onclick="closeWs()"/><br>
     </div>
     <div class="talk_show" id="words">
@@ -173,7 +163,6 @@
     var webSocket;
     var roomName = document.getElementById("chatRoomId").innerText;
     var userId = document.getElementById("userId").innerText;
-    // console.log(roomName);
     if ("WebSocket" in window) {
         if (webSocket == null) {
             var url = "ws://localhost:9527/webSocket/chat/" + roomName + "/" + userId;
@@ -184,30 +173,56 @@
         webSocket.onopen = function () {
             alert("已进入聊天室，畅聊吧...");
         };
-
         webSocket.onmessage = function (evt) {
             var Words = document.getElementById("words");
             //得到返回的数据
             var received_msg = evt.data;
+            console.log(received_msg);
             var userId = document.getElementById("userId").innerText;
-            if (received_msg.split("-")[0] === userId) {
-                var str = '<div class="btalk"><span id="bsay">' + received_msg + '</span></div>';
-            } else
-                var str = '<div class="atalk"><span id="asay">' + received_msg + '</span></div>';
-            Words.innerHTML = Words.innerHTML + str;
-            Words.scrollTop = Words.scrollHeight;
+            var imageLoad = received_msg.split(":")[1];
+            var imageLoad1 = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1600689913960&di=8e6314595185041c82a5ebc460271d00&imgtype=0&src=http%3A%2F%2Fwww.demodashi.com%2Fueditor%2Fjsp%2Fupload%2Fimage%2F20170802%2F1501642960521048148.jpeg";
+            //自己的消息
+            if (received_msg.split("-")[1] === userId) {
+                //文字
+                if (received_msg.split("-")[0] === "0") {
+                    var str = '<div class="btalk"><span id="bsay">' + received_msg + '</span></div>';
+                    Words.innerHTML = Words.innerHTML + str;
+                    Words.scrollTop = Words.scrollHeight;
+                }
+                //图片
+                else {
+                    var str = '<img id="MyImage" src="" width="100px" height="100px">';
+                    Words.innerHTML = Words.innerHTML + str;
+                    document.getElementById('MyImage').src = imageLoad1;
+                    Words.scrollTop = Words.scrollHeight;
+                }
+            }
+            //别人的消息
+            else {
+                //文字
+                if (received_msg.split("-")[0] === "0") {
+                    var str = '<div class="atalk"><span id="asay">' + received_msg + '</span></div>';
+                    Words.innerHTML = Words.innerHTML + str;
+                    Words.scrollTop = Words.scrollHeight;
+                }
+                //图片
+                else {
+                    var str = '<img id="MyImage" src="">';
+                    Words.innerHTML = Words.innerHTML + str;
+                    document.getElementById('MyImage').src = imageLoad1;
+                    Words.scrollTop = Words.scrollHeight;
+                }
+            }
         };
         webSocket.onclose = function () {
             // 关闭 websocket，清空信息板
             alert("连接已关闭...");
             webSocket = null;
-            document.getElementsByClassName("msg_board")[0].innerHTML = "";
         };
     } else {
         // 浏览器不支持 WebSocket
         alert("您的浏览器不支持 WebSocket!");
     }
-
     function send_msg() {
         if (webSocket != null) {
             var input_msg = document.getElementById("input_msg").value.trim();
@@ -221,11 +236,9 @@
             alert("您已掉线，请重新进入聊天室...");
         }
     };
-
     function closeWs() {
         webSocket.close();
     };
-
     //    =============
     //    有关文件上传的JS
     //    =============
@@ -240,19 +253,17 @@
         console.log(str);
     }
 
-    function UploadPictureTest() {
+    function UploadPictureTest() {2
         var data = new FormData();
         //只有使用enctype="multipart/form-data",才会把文件的内容编码到HTML请求中。
         data.enctype = "multipart/form-data";
         data.append("file", $('#uploadPic')[0].files[0]);
         data.append("fileName", $('#uploadPic')[0].files[0].name);
         data.append("type", $('#uploadPic')[0].files[0].type);
-        data.append("chatRoomId",roomName);
-        data.append("userId",userId);
-
-        upImg(data)
+        data.append("chatRoomId", roomName);
+        data.append("userId", userId);
+        upImg(data);
     }
-
 
     var base = "http://localhost:9527";
 
@@ -271,7 +282,6 @@
             }
         })
     }
-
     function sendMultipartRequest(url, method, data, callback) {
         $.ajax({
             url: base + url,
@@ -290,7 +300,5 @@
             }
         })
     }
-
-
 </script>
 </html>

@@ -8,4 +8,5 @@ spring:
     mode: HTML
 
   profiles:
-    active: dev
+    ##active: dev
+    active: prod

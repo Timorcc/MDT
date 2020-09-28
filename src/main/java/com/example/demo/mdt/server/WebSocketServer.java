@@ -31,6 +31,7 @@ public class WebSocketServer {
     private DoctorService doctorServiceImpl = (DoctorService) MyApplicationContextAware.getApplicationContext().getBean("doctorServiceImpl");
     private SmallSecretaryService smallSecretaryServiceImpl = (SmallSecretaryService) MyApplicationContextAware.getApplicationContext().getBean("smallSecretaryServiceImpl");
 
+    //open时先查寻所有的message
     @OnOpen
     public void connect(@PathParam("roomName") String roomName, @PathParam("userId") String userId, Session session) throws Exception {
         System.out.println("连接成功");
@@ -49,11 +50,11 @@ public class WebSocketServer {
         System.out.println("a client has connected!");
         System.out.println("-----------------------");
         List<Message> messageList = messageServiceImpl.findMessageByChatRoomId(Long.valueOf(roomName));
-
         for (Message message : messageList
         ) {
-            String history = message.getSender() + "-" + message.getUsername() + ":" + message.getContent();
-            broadcast(roomName, history);
+            //String history = message.getType()+message.getSender() + "-" + message.getUsername() + ":" + message.getContent();
+            //broadcast(roomName, history);
+            broadcast(roomName, message);
         }
 
     }
@@ -80,15 +81,28 @@ public class WebSocketServer {
         System.out.println("username is" + username);
         //往数据库里存消息，文字消息type为0
         boolean re = messageServiceImpl.insertMessage(Long.valueOf(roomName), Long.valueOf(userId), data, msg, username, "0");
-        msg = userId + "-" + username + ":" + msg;
+        //msg = userId + "-" + username + ":" + msg;
         // 接收到信息后进行广播
-        broadcast(roomName, msg);
+        Message message = new Message();
+        message.setId(0L);
+        message.setChatroom_id(Long.valueOf(roomName));
+        message.setSender(Long.valueOf(userId));
+        message.setSend_date(data);
+        message.setContent(msg);
+        message.setUsername(username);
+        message.setType("0");
+        broadcast(roomName, message);
     }
 
     // 按照房间名进行广播
-    public static void broadcast(String roomName, String msg) throws Exception {
+    public static void broadcast(String roomName, Message message) throws Exception {
+
+        String msg = message.getType()+"-"+ message.getSender() + "-" + message.getUsername() + ":" + message.getContent();
         for (Session session : rooms.get(roomName)) {
             session.getBasicRemote().sendText(msg);
         }
+
     }
+
+
 }
